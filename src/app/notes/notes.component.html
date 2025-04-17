@@ -1,0 +1,50 @@
+<div>
+    <h2>Liste des Notes</h2>
+  
+    <form *ngIf="editing" (ngSubmit)="submitNoteForm()">
+      <label>
+        Titre :
+        <input type="text" [(ngModel)]="editing!.title" name="title" required />
+      </label>
+      <br />
+      <label>
+        Contenu :
+        <textarea [(ngModel)]="editing!.content" name="content"></textarea>
+      </label>
+      <br />
+      <button type="submit">Valider</button>
+      <button type="button" (click)="cancelEdit()">Annuler</button>
+      <label>
+        Couleur :
+        <input type="color" [(ngModel)]="editing!.color" name="color" />
+      </label>
+      <br />
+      
+    </form>
+  
+    <ul>
+      @for(note of notes; track $index) {
+        <li>
+            <li [ngStyle]="{ 'background-color': note.color }">
+
+          <h3>{{ note.title }}</h3>
+          <p>{{ note.content }}</p>
+          <small>Créée le {{ note.createdAt | date:'short' }}</small>
+          <br />
+          <button (click)="editNote(note)">Modifier</button>
+          <button (click)="removeNote(note)">Supprimer</button>
+        </li>
+      } @empty {
+        <li>Aucune note !</li>
+      }
+    </ul>
+  
+    <p>
+      <a href="#" (click)="dialogAddNote(); $event.preventDefault()">Ajouter une nouvelle note</a>
+    </p>
+  
+    <p *ngIf="notes.length > 0">
+      <button (click)="clearAllNotes()">Tout effacer</button>
+    </p>
+  </div>
+  
